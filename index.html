@@ -64,6 +64,138 @@
 				<section id="lets-start" data-background="#654ff0">
 					<h1>Let's start!</h1>
 				</section>
+
+				<section id="wasm">
+					<section id="wasm-description" data-background="img/WASM-logo.png">
+						<aside class="notes">
+							It's a way to execute other langugaes in your website.
+							If you want to alter your website, do some calculation or any programming you could only do it with JS. Now you can use other languages
+
+							Binary format, compact, fast load, portable because it can run on any browser, secure.
+							Does not replace JS
+							Build high performance web applications
+							Rounds around 1.2 to 1.5 times than a native speed
+						</aside>
+					</section>
+
+					<section id="wasm-is">
+						<h2>WebAssembly is</h2>
+						<div class="third center left">
+							<img src="img/js-wasm.jpg" alt="JS and WASM" class="noborder">
+						</div><!--
+						--><div class="twothirds left">
+							<ul>
+								<li>Binary format</li>
+								<li class="fragment">A compilation target for other languages to compile to</li>
+								<li class="fragment">A powerup for JS applications</li>
+								<li class="fragment">Interface from/to JS</li>
+							</ul>
+						</div>
+					</section>
+
+					<section id="wasm-is-not">
+						<h2>WebAssembly is not</h2>
+						<div class="third center left">
+							<img src="img/js-wasm.jpg" alt="JS and WASM" class="noborder">
+						</div><!--
+						--><div class="twothirds left">
+							<ul>
+								<li>A programming language</li>
+								<li class="fragment">A replacement to JavaScript</li>
+							</ul>
+						</div>
+					</section>
+				</section>
+
+				<section id="why" data-background="#654ff0">
+					<h1>Why do we need this?</h1>
+				</section>
+
+				<section id="history">
+					<section id="how-web-worked" data-background="img/90s.jpg">
+						<aside class="notes">
+							The web was in infancy back then. It was simple: everything was on a remote server, and every time your wanted something new, you had to ask for it.
+
+							But even then, people wanted to write applications for the web. Then knew it was the future and wanted to be part of the community that would sharpen it.
+
+							When talking about WebAssembly, you might have a sense of déjà-vu. Compiling other languages for the Web, haven't we tried that before?
+						</aside>
+					</section>
+					<section id="java-applers">
+						<h2>Java Applets</h2>
+						<div class="half left">
+							<img src="img/Java_applet.png" class="noborder">
+							<p class="center">
+								<strong>Mathematical application</strong>
+							</p>
+						</div><!--
+						--><div class="half">
+							<img src="img/NASA_World_Wind.jpg" class="noborder">
+							<p class="center">
+								<strong>NASA World Wind</strong>
+							</p>
+						</div>
+						<aside class="notes">
+							Yes we did. And it was AWEFUL. It was bad. Very bad!
+						</aside>
+					</section>
+					<section id="why-did-applets-disappear">
+						<h2>Why did Java Applets disappear?</h2>
+						<ul>
+							<li>Need to install Java on your computer.</li>
+							<li>Zero integration with the web.</li>
+							<li>Lost strength due to Flash, Silverlight, HTML5</li>
+							<li>Problems with mobile devices</li>
+							<li>Lots of Security issues</li>
+						</ul>
+						<aside class="notes">
+							Java was not present in Windows by default, or other devices.
+							It was not possible to interact with the rest of the site.
+							Flash, Silverlight and HTML5 began to emerge.
+							It was not optimal for mobile devices.
+							Absent in some architectures such as Linux 64bits.
+						</aside>
+					</section>
+					<section id="java-death" data-background="#654ff0">
+						<img src="img/java-applets.png" alt="Logo de Java Applets">
+						<h1>....and thus, Java applets began to disappear...</h1>
+						<aside class="notes">
+							The dream of the language for the web then took a heavy hit.
+						</aside>
+					</section>
+					<section id="javascript-rises" data-background="#f7df1d">
+						<p>....until JavaScript</p>
+						<aside class="notes">
+							It became the language used for the web due to being optimized for mobile devices, did not require installing additional things, present in all architectures.
+
+							Since you are all web developers, I don't need to present this to you. It became the brick and mortar of the web. Everyone and their moms could now develop for the web.
+
+							And a big plus for JavaScript was the arrival of AJAX. It was revolutionnary. Not need to reload anymore, you can browse in peace and the heavy lifting would be done by other applications, stored in a server far away.
+						</aside>
+					</section>
+					<section id="love-js">
+						<img src="img/LoveJS.jpg" alt="We love JS" class="noborder">
+						<p class="fragment">
+							But it has its problems...
+						</p>
+						<aside class="notes">
+							We all love JavaScript. Very much. It has given us so much. Especially the convenient frameworks that seems to appear every two days.
+						</aside>
+					</section>
+
+					<section id="performance" data-background="img/gifs/slow-turtle.gif">
+						<h2 class="white" style="margin-bottom: 40%">Performance</h2>
+						<aside class="notes">
+							Javascript was never designed to be fast and browsers
+							vendors have made an excelent work by improving
+							JS speed over the years, but that's not the correct way
+							to go.
+
+							We forced JavaScript to do our bidding all those years because we only had her.
+							We had no choice.
+						</aside>
+					</section>
+				</section>
 			</div>
 		</div>
 
