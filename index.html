@@ -173,6 +173,8 @@
 							And a big plus for JavaScript was the arrival of AJAX. It was revolutionnary. Not need to reload anymore, you can browse in peace and the heavy lifting would be done by other applications, stored in a server far away.
 						</aside>
 					</section>
+				</section>
+				<section id="javascript">
 					<section id="love-js">
 						<img src="img/LoveJS.jpg" alt="We love JS" class="noborder">
 						<p class="fragment">
@@ -182,7 +184,6 @@
 							We all love JavaScript. Very much. It has given us so much. Especially the convenient frameworks that seems to appear every two days.
 						</aside>
 					</section>
-
 					<section id="performance" data-background="img/gifs/slow-turtle.gif">
 						<h2 class="white" style="margin-bottom: 40%">Performance</h2>
 						<aside class="notes">
@@ -195,6 +196,410 @@
 							We had no choice.
 						</aside>
 					</section>
+					<section id="why-slow"  data-background="#654ff0">
+						<h1>How browsers run JS code</h1>
+						<img src="img/js-parsing.png" alt="JS execution">
+						<p>
+							<small>
+								Source: <a href="https://www.youtube.com/watch?v=HktWin_LPf4">Lin Clark</a> &copy; 2017.
+							</small>
+						</p>
+						<aside class="notes">
+							This lack of performance is due to how JavaScript code is managed by the browsers.
+
+							There are certain parts of the code that can be optimized before being executed.
+
+							For example, a piece of code inside a loop will be compiled and optimized by the engines.
+
+							But it's not enough.
+						</aside>
+					</section>
+					<section id="slow-example"  data-background="#654ff0">
+						<h1>Let's see an <br> execution example...</h1>
+					</section>
+					
+					<section id="js-addition-example">
+						<h1>An addition in JS</h1>
+						<pre><code>
+	function sum(a, b) {
+		return a + b;
+	}
+						</code></pre>
+						<p>Pretty simple, right? <br>It <em>"should be a single"</em> CPU instruction</p>
+						<aside class="notes">
+							How can we know id they are 2 numbers, if I want to concatenate 2 strings, if b value is a number 
+							and want to merge it to the left string value. Something simple like this is
+							because JS is not typed.
+						</aside>
+					</section>
+	
+					<section id="ecma-addition">
+						<h2>How ECMA-262 <br> defines an addition</h2>
+						<blockquote>
+							
+						<ol class="small">
+							<li>Let lref be the result of evaluating AdditiveExpression.</li>
+							<li>Let lval be GetValue(lref).</li>
+							<li>Let rref be the result of evaluating MultiplicativeExpression.</li>
+							<li>Let rval be GetValue(rref).</li>
+							<li>Let lprim be ToPrimitive(lval).</li>
+							<li>Let rprim be ToPrimitive(rval).</li>
+							<li>
+									If Type(lprim) is String or Type(rprim) is String, then
+									<ul>
+										<li>
+										Return the String that is the result of concatenating ToString(lprim) followed by ToString(rprim)
+										</li>
+										<li>
+										Return the result of applying the addition operation to ToNumber(lprim) and ToNumber(rprim).
+										</li>
+									</ul>
+							</li>
+						</ol>
+						</blockquote>
+						<p class="small right">
+							Source: 
+							<a href="https://www.ecma-international.org/ecma-262/5.1/" title="ECMAScript Spec">ECMAScript® Language Specification. (Sec. 11.6.1)</a>
+						</p>
+						<aside class="notes">
+							If this code is inside a loop, it will be around 8 times slower
+							than native code.
+						</aside>
+					</section>
+	
+					<section id="why-slow-2">
+						<h2>Why?</h2>
+						<p>
+							You have to do some sacrifices
+						</p>
+						<div class="half left">
+							<img src="img/programmers.jpg" alt="Programmers">
+							<p class="small center">Understand Programming languages</p>
+						</div><!--
+						--><div class="half left">
+							<img src="img/devices.jpg" alt="Dispositivos">
+							<p class="small center">Understand binary or low level code.</p>
+						</div>
+						<aside class="notes">
+							To make a language comfortable for people, you have to 
+							sacrifice performance, because it's better to make application that's easy to create
+							you don't need to execute it at maximum performance all the time.
+						</aside>
+					</section>
+				</section>
+				<section id="how-solve" data-background="#654ff0">
+					<h1>How to solve this?</h1>
+				</section>
+				<section id="webassembly">
+					<section id="wasm-js">
+						<h2>WebAssembly</h2>
+						<div class="third center left">
+							<img src="img/js-wasm.jpg" alt="JS and WASM" class="noborder">
+						</div>
+					</section>
+					<section id="wasm-runs"  data-background="#654ff0">
+						<h1>How browsers run WASM</h1>
+						<img src="img/wasm-execute.png" alt="WASM execution" class="half">
+						<p>
+							<small>
+								Source: <a href="https://www.youtube.com/watch?v=HktWin_LPf4">Lin Clark</a> &copy; 2017.
+							</small>
+						</p>
+						<aside class="notes">
+							As we see here, there are less stages to pass through before execution.
+
+							And those stages are shorter.
+
+							It's faster
+						</aside>
+					</section>
+					<section id="wasm-binary">
+						<h2>Binary format</h2>
+						<p>
+							<img src="img/wasm7codeexplorer.png" alt="WASM binary explorer" class="center twothirds">
+						</p>
+						<p>
+							Check it with
+							<a href="https://wasdk.github.io/wasmcodeexplorer/" title="Check tool">
+								WASM Code Explorer
+							</a>
+						</p>
+						<aside class="notes">
+							First 4 bytes is a number that represents .asm, then version, functions, memory, etc.
+						</aside>
+					</section>
+					<section id="wast">
+						<h2>WebAssembly Text Format</h2>
+<pre><code>(module
+	(type $type0 (func (param i32)))
+	(type $type1 (func))
+	(import "sys" "print" (func $import0 (param i32)))
+	(memory (;0;) 200 200)
+	(export "memory" (memory 0))
+	(export "main" (func $func1))
+	(func $func1
+	i32.const 0
+	call $import0
+	)
+	(data (i32.const 0)
+	"Hello, world\00"
+	)
+)</code></pre>
+						<p>
+							Hello World in WAT
+						</p>
+						<aside class="notes">
+							It's used for human notation, some security firms work at this level, is platform independent.
+							Check types, parameters
+						</aside>
+					</section>
+					<section id="fashion" data-background="#654ff0">
+						<h1>You might think it's just trendy....</h1>
+					</section>
+					<section id="browsers" data-background="#654ff0">
+						<h1>No! <br> it has great support!</h1>
+						<div class="fragment">
+							<img src="img/browser-logos.png" alt="web browsers" class="noborder padding" />
+						</div>
+						<aside class="notes">
+								I think it's the first time we've seen a technology initially supported by all browsers.
+								
+								First proposed by Firefox, then Edge, Google Chrome and finally Safari.
+								
+								Interoperability is guaranteed.
+
+								Approximately 65% of the market can run WASM.
+						</aside>
+					</section>
+				</section>
+				<section id="how-created"  data-background="#654ff0">
+					<h1>How it's created?</h1>
+				</section>
+				<section id="create-wasm">
+					<section id="compiler-target">
+						<h2>Compiler target</h2>
+						<p>
+							Each supported language's compiler
+							will generate a <strong>.wasm</strong> file from the compiler.
+						</p>
+	
+						<div class="left">
+							<h4>Rust</h4>
+							<pre style="width: 100%"><code>rustc --target=wasm32-unknown-uknown project.rs -o project.html</code></pre>
+							<h4>GO</h4>
+							<pre style="width: 100%"><code>GOOS=js GOARCH=wasm go build -o main.wasm</code></pre>
+						</div>
+					</section>
+					<section id="emscripten">
+						<h2>Emscripten</h2>
+						<p>
+							It's a toolchain to take high languages code to WASM
+						</p>
+						<div class="compile-process">
+							<span class="c">C/C++</span> &rarr;
+							<span class="llvm">LLVM</span> &rarr;
+							<span class="emscripten">Emscripten</span> + <span class="asm">Binaryen</span> &rarr;
+							<span class="wasm">WASM</span>
+						</div>
+						<p class="left">Execute</p>
+						<pre><code>emcc project.c -s WASM=1 -o project.html</code></pre>
+						<aside class="notes">
+								Like nobody writes in ASM (although it is possible), it uses high level language and compiles to generate the binary file.
+								The same is with WASM. It is encoded in C / C ++ and RUST, using this set of tools the WASM file is obtained.
+						</aside>
+					</section>
+	
+					<section id="compilation-result" data-background="#654ff0">
+						<h1>What do I get with this?</h1>
+					</section>
+	
+					<section id="results">
+						<h2>Compilation result</h2>
+						<p class="left">
+							You'll get at least these 3 files:
+						</p>
+						<ol>
+							<li>The <strong>.wasm</strong> file.</li>
+							<li>JS code to import WASM module.</li>
+							<li>HTML page to execute the WASM module.</li>
+						</ol>
+					</section>
+	
+					<section id="code-interaction">
+						<h2>Code interaction</h2>
+							<img src="img/wasm-c.png" class="half noborder" alt="JS and C interaction">
+						<p>
+							<small>Comunicate code between JS and WASM</small>
+						</p>
+					</section>
+	
+	
+					<section id="interacion-js-wasm">
+						<h2>Calls C functions from JS</h2>
+						<p>C</p>
+						<pre><code>#include &lt;math.h&gt;
+extern "C" {
+	int int_sqrt(int x) {
+		return sqrt(x);
+	}
+}</code></pre>
+	
+						<p>JavaScript</p>
+						<pre><code>int_sqrt = Module.cwrap('int_sqrt', 'number', ['number'])
+int_sqrt(12)
+int_sqrt(28)</code></pre>
+					<aside class="notes">
+						ccall() calls a function and cwrap() grabs it.
+						Second parameter is the return and last is the type of the parameters:
+						number, string or array.
+					</aside>
+				</section>
+
+				<section id="interacion-c-js">
+					<h2>Call JS functions from C</h2>
+					<div class="half left">
+						<p class="small">With <em>emscripten_run_script()</em></p>
+
+						<pre><code>emscripten_run_script(
+	"alert('I love alerts')"
+);</code></pre>
+						</div><!--
+						--><div class="half left">
+							<p class="small">With <em>EM_ASM()</em></p>
+							<pre><code>#include &lt;emscripten.h&gt;
+int main() {
+	EM_ASM(
+	alert('DO NOT USE ALERTS!');
+	throw 'execution ready';
+	);
+	return 0;
+}}</code></pre>
+						</div>
+						<aside class="notes">
+							Remember to include emscripten, that's the only way. And alert is not used in node.
+						</aside>
+					</section>
+				</section>
+				<section id="use-example" data-background="#654ff0">
+					<h1>What can I do with WASM?</h1>
+				</section>
+				<section id="examples">
+					<section id="zen-garden" data-background-video="img/video/zengarden.mp4">
+						<aside class="notes">
+								Library optimization.
+								Video codecs
+								Programs to encrypt faster.
+								Video game.
+								Image treatment
+							</li>
+						</aside>
+					</section>
+					<section id="wasm-video-editor">
+						<h2>WASM video editor</h2>
+						<a href="https://d2jta7o2zej4pf.cloudfront.net/">
+							<img src="img/wasm-editor.jpg" alt="WASM Video Editor" class="noborder">
+						</a>
+						<p>Applies video effects on realtime</p>
+					</section>
+	
+					<section id="aprende-c">
+						<h2>Aprende C (Learn C)</h2>
+						<img src="img/AprendeC.png" alt="Learn C with WASM" class="half noborder"> 
+						<p>
+							A website to learn C; <br> code is executed at browser level
+						</p>
+					</section>
+	
+					<section id="autocad-on-the-web">
+						<h2>AutoCAD on the web</h2>
+						<img src="img/autocad-web.png" alt="AutoCAD web" class="half"> 
+						<p>
+							Source: <a href="https://twitter.com/AutoCAD/status/993963826914648064">Twitter</a>.
+						</p>
+					</section>
+	
+					<section id="wp-gutenberg">
+						<h2>WordPress Gutenberg Parser</h2>
+						<img src="img/wp-gutenberg.png" alt="WordPress Gutenberg" class="half"> 
+						<p>
+							WordPress' new editor uses a parser written in Rust.
+						</p>
+					</section>
+	
+					<section id="wp-gutenberg-results" data-background="img/wasm-parser-results.png">
+					</section>
+	
+					<section id="pib">
+						<h2>PIB: PHP In the Browser</h2>
+						<p>Zend interpreter migrated to WASM</p>
+						<img src="img/pib.png" alt="PIB: PHP in the browser" class="half"> 
+						<p>
+							More info at: 
+							<a href="https://github.com/oraoto/pib" alt="Visit site">https://github.com/oraoto/pib</a>
+						</p>
+					</section>
+	
+					<section id="full-php-stack" data-background="#654ff0">
+						<h1>We can go <br> full-stack with PHP!</h1>
+						<h2 class="fragment">Bye Bye JS! (Just kidding)</h2>
+					</section>
+				</section>
+				<section id="future">
+					<h2>Future WASM features</h2>
+					<ul>
+						<li>Multi-threading and Atomics</li>
+						<li>Exception handling</li>
+						<li>Garbage collection</li>
+						<li>Global mutable variables</li>
+						<li>SIMD.</li>
+						<li>JS BigInt &larr;&rarr; WebAssembly i64.</li>
+					</ul>
+					<p>
+						<small>
+							More at:
+							<a href="https://webassembly.org/docs/future-features/" target="_blank">
+								https://webassembly.org/docs/future-features/
+							</a>
+						</small>
+					</p>
+					<aside class="notes">
+						Atomics is that you'll see full value before or after change, not in the middle.
+						Initial Threads will be with be Service Workers and then with OS threads.
+					</aside>
+				</section>
+
+				<section id="available">
+					<div class="dark-bg white">
+						<h2>Don't wait!</h2>
+						<h1>Test it now with 
+							<a href="https://webassembly.studio/" title="WASM Studio" title="WASM Studio">
+								WebAssembly Studio!
+							</a>
+						</h3>
+					</div>
+				</section>
+
+				<section id="links">
+					<h2 class="title">Recommended Links</h2>
+					<ul>
+						<li><a href="https://webassembly.org/">WASM official site</a></li>
+						<li><a href="https://webassembly.studio/">WebAssembly Studio</a></li>
+						<li><a href="https://developer.mozilla.org/en-US/docs/WebAssembly">Web Docs information</a></li>
+						<li><a href="https://blog.mikaellundin.name/2016/06/19/creating-a-webassembly-binary-and-running-it-in-a-browser.html/">WASM Binary Structure</a></li>
+						<li><a href="https://hacks.mozilla.org/?s=webassembly">Mozilla Hacks</a></li>
+						<li><a href="https://kripken.github.io/emscripten-site/">emscripten website</a></li>
+					</ul>
+				</section>
+				<section id="social" data-background="#654ff0">
+					<img src="img/gifs/thank-you.gif">
+					<div>
+						mariot.tsitoara<strong>@pm.me</strong><br>
+						<a class="white" href="https://mariot.hianatra.com" alt="Personal site">mariot.hianatra.com</a><br>
+						<div class="social">
+							<a href="https://twitter.com/mariot_tsitoara">@mariot_tsitoara</a>  |
+							<a href="https://twitter.com/mozhacks">@mozhacks</a>
+						</small>
+					</div>
 				</section>
 			</div>
 		</div>
